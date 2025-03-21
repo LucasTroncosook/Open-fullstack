@@ -61,12 +61,21 @@ function App() {
     if(!existName){
       agendaServices
       .createPhone(contactoObject)
-      .then(returnedPerson => setPersons(persons.concat(returnedPerson)))
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        setMessage({message: `Added ${newName}`, status: true})
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000);
+      })
+      .catch(error => {
+        setMessage({message: error.response.data.error, status: false})
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000);
+      })
 
-      setMessage(`Added ${newName}`)
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000);
+
     }
 
     setNewName('')
@@ -80,7 +89,9 @@ function App() {
     }
     agendaServices
       .deletePhone(person.id)
-      .then(returnedPerson => setPersons(persons.filter(person => person.id !== returnedPerson.id)))
+      .then(returnedPerson => {
+        setPersons(persons.filter(p => p.id !== person.id))
+      })
   }
 
   const filterAgenda = filterName === "" 
@@ -90,7 +101,7 @@ function App() {
   return (
     <>
       <h2>Phonebook</h2>
-      <Message message={message}/>
+      <Message messageObject={message}/>
       <Filter 
         filterName={filterName} 
         handleFilterName={handleFilterName}
