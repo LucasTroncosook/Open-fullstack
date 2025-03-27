@@ -1,0 +1,10 @@
+POST http://localhost:3005/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikx1Y2FzIFRyb25jb3NvIiwiaWQiOiI2N2U0NDdmYTg3YTMwOTFjMzg3ZGZlZTAiLCJpYXQiOjE3NDMwMTg5Mzd9.eT4LpCFnLWry-Fa6DWIkO5D6jYBN5R7Os3he5C9v-KU
+
+{
+    "title": "Creando una nueva publicación de mi blog con token desde un middleware",
+    "author": "Lucas Troncoso",
+    "likes": 1,
+    "link": "http://localhost:3005/api/blogs"
+}
