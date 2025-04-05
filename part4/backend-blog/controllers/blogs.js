@@ -17,6 +17,7 @@ blogsRouter.post('/', middleware.userExtractor ,async (request, response) => {
     const body = request.body
 
     const user = request.user
+    console.log(user)
 
     if(!user.id){
         return response.status(401).json({error: 'unknown user'})
@@ -26,14 +27,15 @@ blogsRouter.post('/', middleware.userExtractor ,async (request, response) => {
         title: body.title,
         author: body.author,
         likes: body.likes || 0,
-        link: body.link,
+        url: body.url,
         user: user.id
     })
 
     const savedBlog = await blog.save()
+    const populatedBlog = await savedBlog.populate('user', { username: 1, name: 1 })
     user.blogs = user.blogs.concat(savedBlog._id)
     await user.save()
-    response.status(201).json(savedBlog)
+    response.status(201).json(populatedBlog)
     
 
 })
@@ -57,7 +59,7 @@ blogsRouter.put('/:id', async (request, response, next) => {
     }
 
     try {
-        const updateBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {new: true, runValidators: true})
+        const updateBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {new: true}).populate('user', { username: 1, name: 1 })
 
         response.status(201).json(updateBlog)
     } catch (error) {

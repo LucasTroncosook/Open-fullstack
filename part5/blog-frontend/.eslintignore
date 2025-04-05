@@ -1,0 +1,4 @@
+dist
+node_module
+eslint.config.js
+vite.config.js
